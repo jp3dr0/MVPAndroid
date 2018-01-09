@@ -71,7 +71,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
 
     @Override
     public void showInputError() {
-        Toast.makeText(this, "Digite os campos necessários.", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Digite os campos necessários.", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
