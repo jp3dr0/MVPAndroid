@@ -1,5 +1,7 @@
 package com.example.joaop.mvpindiano.login.mvp.view;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.joaop.mvpindiano.R;
+import com.example.joaop.mvpindiano.login.depedencyInjection.DaggerLoginViewComponent;
+import com.example.joaop.mvpindiano.login.depedencyInjection.LoginViewComponent;
+import com.example.joaop.mvpindiano.login.depedencyInjection.LoginViewModule;
 import com.example.joaop.mvpindiano.login.mvp.LoginActivityMVP;
 import com.example.joaop.mvpindiano.root.App;
 
@@ -27,23 +32,37 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // RECEBENDO AS DEPENDENCIAS
-        ((App) getApplication()).getComponent().inject(this);
+        LoginViewComponent component = DaggerLoginViewComponent.builder()
+                .appComponent(((App)getApplication()).getComponent())
+                .loginViewModule(new LoginViewModule(this))
+                .build();
 
-        firstName = (EditText) findViewById(R.id.loginActivity_lastName_editText);
-        lastName = (EditText) findViewById(R.id.loginActivity_firstName_editText);
-        login = (Button) findViewById(R.id.loginActivity_login_button);
+        component.injectLoginActivity(this);
 
-        //firstName.setText("");
-        //lastName.setText("");
+        // FRAGMENT
+        LoginFragment loginFragment = new LoginFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(loginFragment, null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.frag_container, loginFragment);
+        fragmentTransaction.commit();
+    }
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // PRESENTER TRATA O CLICK NO BOTAO
-                presenter.loginButtonClicked();
-            }
-        });
+    public void setLogin(Button login) {
+        this.login = login;
+    }
+
+    public void setFirstName(EditText firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(EditText lastName) {
+        this.lastName = lastName;
+    }
+
+    public void loginButtonClicked(){
+        presenter.loginButtonClicked();
     }
 
     @Override
@@ -71,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
 
     @Override
     public void showInputError() {
-        // Toast.makeText(this, "Digite os campos necessários.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Digite os campos necessários.", Toast.LENGTH_SHORT).show();
 
     }
 

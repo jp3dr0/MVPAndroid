@@ -1,6 +1,6 @@
-package com.example.joaop.mvpindiano.root;
+package com.example.joaop.mvpindiano.root.old;
 
-import com.example.joaop.mvpindiano.login.depedencyInjection.LoginModule;
+import com.example.joaop.mvpindiano.login.depedencyInjection.old.LoginModule;
 import com.example.joaop.mvpindiano.login.mvp.view.LoginActivity;
 
 import javax.inject.Singleton;

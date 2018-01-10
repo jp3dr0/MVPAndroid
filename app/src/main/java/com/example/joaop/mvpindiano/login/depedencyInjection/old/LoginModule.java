@@ -1,4 +1,4 @@
-package com.example.joaop.mvpindiano.login.depedencyInjection;
+package com.example.joaop.mvpindiano.login.depedencyInjection.old;
 
 import com.example.joaop.mvpindiano.login.mvp.model.LoginModel;
 import com.example.joaop.mvpindiano.login.mvp.LoginActivityMVP;

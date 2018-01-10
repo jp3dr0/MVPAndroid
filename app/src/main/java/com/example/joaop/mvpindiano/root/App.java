@@ -1,17 +1,27 @@
 package com.example.joaop.mvpindiano.root;
 
+import android.app.Activity;
 import android.app.Application;
 
-import com.example.joaop.mvpindiano.login.depedencyInjection.LoginModule;
+import com.example.joaop.mvpindiano.login.repository.LoginRepository;
+import com.example.joaop.mvpindiano.network.dependencyInjection.ApiServiceModule;
+import com.example.joaop.mvpindiano.root.dependencyInjection.*;
 
 // VAMOS DEFINIR NESSA CLASSE QUE É A BASE DE TODA A APLICAÇÃO QUAIS SAO OS COMPONENTES (GRUPOS DE MODULOS) QUE SERÃO UTILIZADOS
 public class App extends Application {
 
+    private LoginRepository apiService;
+
     // COMPONENTES UTILIZADOS NA APLICAÇÃO
-    private ApplicationComponent component;
+    private AppComponent component;
+
+    // GETTER DESSA CLASSE
+    public static App get(Activity activity) {
+        return (App) activity.getApplication();
+    }
 
     // GETTER DOS COMPONENTES
-    public ApplicationComponent getComponent() {
+    public AppComponent getComponent() {
         return component;
     }
 
@@ -20,9 +30,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        component = DaggerApplicationComponent.builder()
-                .applicationModule(new ApplicationModule(this))
-                .loginModule(new LoginModule())
+        component = DaggerAppComponent.builder()
+                .apiServiceModule(new ApiServiceModule())
                 .build();
+
+        apiService = component.getApiService();
     }
 }
