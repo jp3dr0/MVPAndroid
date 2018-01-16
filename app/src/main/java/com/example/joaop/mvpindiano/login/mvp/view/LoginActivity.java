@@ -1,5 +1,6 @@
 package com.example.joaop.mvpindiano.login.mvp.view;
 
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -14,18 +15,30 @@ import com.example.joaop.mvpindiano.login.depedencyInjection.DaggerLoginViewComp
 import com.example.joaop.mvpindiano.login.depedencyInjection.LoginViewComponent;
 import com.example.joaop.mvpindiano.login.depedencyInjection.LoginViewModule;
 import com.example.joaop.mvpindiano.login.mvp.LoginActivityMVP;
+import com.example.joaop.mvpindiano.network.ApiService;
+import com.example.joaop.mvpindiano.network.model.User;
 import com.example.joaop.mvpindiano.root.App;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class LoginActivity extends AppCompatActivity implements LoginActivityMVP.View {
 
     private EditText firstName, lastName;
-    private Button login;
+
+    private LoginFragment loginFragment;
+    private ApiFragment apiFragment;
+    private FragmentManager fragmentManager;
+    private List<User> usuarios = new ArrayList<User>();
 
     // DEPENDENCIAS DA VIEW
     @Inject
     LoginActivityMVP.Presenter presenter;
+
+    @Inject
+    ApiService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +52,32 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
 
         component.injectLoginActivity(this);
 
-        // FRAGMENT
-        LoginFragment loginFragment = new LoginFragment();
+        if (savedInstanceState == null) {
+            iniciarLoginFragment();
+        }
+
+    }
+
+    public void iniciarLoginFragment(){
+        loginFragment = new LoginFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(loginFragment, null);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.add(loginFragment, "login");
+        fragmentTransaction.addToBackStack("login");
         fragmentTransaction.replace(R.id.frag_container, loginFragment);
         fragmentTransaction.commit();
     }
 
-    public void setLogin(Button login) {
-        this.login = login;
+    public ApiService getApiService() {
+        return apiService;
+    }
+
+    public List<User> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<User> usuarios) {
+        this.usuarios = usuarios;
     }
 
     public void setFirstName(EditText firstName) {
@@ -63,6 +90,17 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
 
     public void loginButtonClicked(){
         presenter.loginButtonClicked();
+    }
+
+    public void retrofitButtonClicked(){
+        apiFragment = new ApiFragment();
+        if(fragmentManager == null){
+            fragmentManager = getSupportFragmentManager();
+        }
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frag_container, apiFragment, "api");
+        fragmentTransaction.addToBackStack("api");
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -108,4 +146,5 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     public void setLastName(String lastName) {
         this.lastName.setText(lastName);
     }
+
 }
