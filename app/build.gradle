@@ -37,12 +37,19 @@ dependencies {
 
     // RETROFIT
     compile 'com.squareup.retrofit2:retrofit:2.3.0' // retrofit
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    // configurando gson como parser do retrofit
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
-    // interceptador das requisições para debug
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0' // configurando gson como parser do retrofit
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0' // interceptador das requisições para debug
     compile 'com.google.code.gson:gson:2.8.2' // parser de json para pojo
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0' // adapter do rxjava para retrofit
 
+    // RXJAVA 1
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.9'
 
+    // RXJAVA 2
+    //compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //compile 'io.reactivex.rxjava2:rxjava:2.1.8'
+
+    // RECYCLER VIEW
     implementation 'com.android.support:recyclerview-v7:26.1.0'
 }

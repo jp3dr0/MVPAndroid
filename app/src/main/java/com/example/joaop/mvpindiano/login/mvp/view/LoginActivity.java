@@ -3,12 +3,14 @@ package com.example.joaop.mvpindiano.login.mvp.view;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.joaop.mvpindiano.R;
 import com.example.joaop.mvpindiano.login.depedencyInjection.DaggerLoginViewComponent;
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     private FragmentManager fragmentManager;
     private List<User> usuarios = new ArrayList<User>();
 
+    public ActionBar toolbar;
+
     // DEPENDENCIAS DA VIEW
     @Inject
     LoginActivityMVP.Presenter presenter;
@@ -44,6 +48,8 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityMVP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        toolbar = getSupportActionBar();
 
         LoginViewComponent component = DaggerLoginViewComponent.builder()
                 .appComponent(((App)getApplication()).getComponent())
